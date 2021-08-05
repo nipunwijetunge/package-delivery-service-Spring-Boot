@@ -2,7 +2,7 @@ package com.nipun.ABXpackagedeliveryservice.dto;
 
 public class PackageDTO {
 	private String packageRegistrationNo;
-	private int packageTypeId;
+	private String packageTypeId;
 	private int packageWeightRangeId;
 	
 	private PersonDTO bearer;
@@ -20,7 +20,7 @@ public class PackageDTO {
 	
 	private String packageStatus;
 
-	public PackageDTO(int packageTypeId, int packageWeightRangeId, PersonDTO bearer, PersonDTO reciever,
+	public PackageDTO(String packageTypeId, int packageWeightRangeId, PersonDTO bearer, PersonDTO reciever,
 			int deliveryTypeId, String deliveryDate) {
 		super();
 		this.packageTypeId = packageTypeId;
@@ -39,11 +39,11 @@ public class PackageDTO {
 		this.packageRegistrationNo = packageRegistrationNo;
 	}
 
-	public int getPackageTypeId() {
+	public String getPackageTypeId() {
 		return packageTypeId;
 	}
 
-	public void setPackageTypeId(int packageTypeId) {
+	public void setPackageTypeId(String packageTypeId) {
 		this.packageTypeId = packageTypeId;
 	}
 
