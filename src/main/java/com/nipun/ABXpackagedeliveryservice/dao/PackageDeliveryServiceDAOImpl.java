@@ -15,6 +15,16 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	private static Connection con = null;
 	
 	@Override
+	public Connection getCon() {
+		return con;
+	}
+
+	@Override
+	public void setCon(Connection con) {
+		PackageDeliveryServiceDAOImpl.con = con;
+	}
+	
+	@Override
 	public ResultSet getData(String query) throws Exception {
 		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
@@ -94,5 +104,53 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 		pstmt.setString(1, status);
 		
 		pstmt.executeUpdate();
+	}
+	
+	@Override
+	public PreparedStatement packageRegistration() throws Exception {
+		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+		con = DriverManager.getConnection(url, "root", "");
+		
+		String query = "INSERT INTO m_package_registry (packageRegistrationNo,packageTypeId,packageWeightRangeId,bearerId,recieverId,deliveryTypeId,deliveryDate,packageStatus) "
+				+ "VALUES(?,?,?,?,?,?,?,?)";
+		
+		return con.prepareStatement(query);
+	}
+	
+	@Override
+	public PreparedStatement packageStoring() throws Exception {
+		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+		con = DriverManager.getConnection(url, "root", "");
+		
+		String query = "INSERT INTO m_package_store (packageRegistrationNo,storeID,cupboardID,storedOfficerID) "
+				+ "VALUES(?,?,?,?)";
+		
+		return con.prepareStatement(query);
+	}
+	
+	@Override
+	public PreparedStatement packageAssignment() throws Exception {
+		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+		con = DriverManager.getConnection(url, "root", "");
+		
+		String query = "INSERT INTO m_package_assignment (packageRegistrationNo,assignerId,assigneeId) "
+				+ "VALUES(?,?,?)";
+		
+		return con.prepareStatement(query);
+	}
+	
+	@Override
+	public PreparedStatement packageDeleteFromStore() throws Exception {
+		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+		con = DriverManager.getConnection(url, "root", "");
+		
+		String query = "DELETE FROM m_package_store "
+				+ "WHERE packageRegistrationNo=?";
+		
+		return con.prepareStatement(query);
 	}
 }

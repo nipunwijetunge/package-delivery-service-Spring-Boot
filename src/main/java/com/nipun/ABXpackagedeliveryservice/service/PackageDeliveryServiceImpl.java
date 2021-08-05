@@ -102,8 +102,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}
@@ -122,8 +122,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}
@@ -164,8 +164,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}
@@ -184,8 +184,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}
@@ -204,8 +204,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return 0;
 	}
@@ -224,8 +224,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return 0;
 	}
@@ -244,8 +244,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}
@@ -302,8 +302,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			String formattedSeqNo = decimalFormatter.format(jObj.get("seqNo").getAsDouble());
 			packageRegistrationNo = jObj.get("year").getAsString()+"/"+jObj.get("packageTypeId").getAsString()+"/"+formattedSeqNo;
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return packageRegistrationNo;
 	}
@@ -369,13 +369,15 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// registers package and store registration data in database
 	@Override
 	public PackageDeliveryResponse registerPackage(PackageDeliveryRequest pkg) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-		con = DriverManager.getConnection(url, "root", "");
+//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+//		con = DriverManager.getConnection(url, "root", "");
+//		
+//		String query = "INSERT INTO m_package_registry (packageRegistrationNo,packageTypeId,packageWeightRangeId,bearerId,recieverId,deliveryTypeId,deliveryDate,packageStatus) "
+//				+ "VALUES(?,?,?,?,?,?,?,?)";
+//		PreparedStatement pstmt = con.prepareStatement(query);
 		
-		String query = "INSERT INTO m_package_registry (packageRegistrationNo,packageTypeId,packageWeightRangeId,bearerId,recieverId,deliveryTypeId,deliveryDate,packageStatus) "
-				+ "VALUES(?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmt = dao.packageRegistration();
 		
 		String packageRegistrationNo = generatePackageRegNo(setPackageTypeData(pkg.getItem().getPackageTypeId()));
 		
@@ -405,7 +407,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		
 		if (bearerIdFlag && bearerPhoneFlag && bearerEmailFlag) {
-			for (JsonElement user : getCustomerData("SELECT * FROM bearer")) {
+			for (JsonElement user : getCustomerData("SELECT bearerID FROM bearer")) {
 				JsonObject obj = user.getAsJsonObject();
 				if (obj.get("bearerID").getAsString().equalsIgnoreCase(pkg.getItem().getBearer().getId())) {
 					bearerExist = true;
@@ -445,7 +447,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		
 		if (receiverIdFlag && receiverPhoneFlag && receiverEmailFlag) {
-			for (JsonElement user : getCustomerData("SELECT * FROM reciever")) {
+			for (JsonElement user : getCustomerData("SELECT recieverID FROM reciever")) {
 				JsonObject obj = user.getAsJsonObject();
 				if (obj.get("recieverID").getAsString().equalsIgnoreCase(pkg.getItem().getReciever().getId())) {
 					recieverExist = true;
@@ -469,8 +471,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		
 		pstmt.executeUpdate();
 		
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		
 		QRCodeGenerator qrCode = new QRCodeGeneratorImpl();
@@ -481,13 +483,14 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// stores package and save store data in database
 	@Override
 	public PackageDeliveryResponse storePackage(PackageDeliveryRequest pkg) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-		con = DriverManager.getConnection(url, "root", "");
-		
-		String query = "INSERT INTO m_package_store (packageRegistrationNo,storeID,cupboardID,storedOfficerID) "
-				+ "VALUES(?,?,?,?)";
-		PreparedStatement pstmt = con.prepareStatement(query);
+//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+//		con = DriverManager.getConnection(url, "root", "");
+//		
+//		String query = "INSERT INTO m_package_store (packageRegistrationNo,storeID,cupboardID,storedOfficerID) "
+//				+ "VALUES(?,?,?,?)";
+//		PreparedStatement pstmt = con.prepareStatement(query);
+		PreparedStatement pstmt = dao.packageStoring();
 		
 		String checkRegNoQuery = "SELECT packageRegistrationNo FROM m_package_store "
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
@@ -495,9 +498,9 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
 		//String checkPackageWhetherAssigned = "SELECT packageRegistrationNo FROM m_package_assignment WHERE packageRegistrationNo='"+pkg.getPackageRegistrationNo()+"'";
 		
-		ResultSet rs = getData(checkRegNoQuery);
-		ResultSet rs1 = getData(checkPackageInRegistry);
-		//ResultSet rs3 = getData(checkPackageWhetherAssigned);
+		ResultSet rs = dao.getData(checkRegNoQuery);
+		ResultSet rs1 = dao.getData(checkPackageInRegistry);
+		//ResultSet rs3 = dao.getData(checkPackageWhetherAssigned);
 		
 		if (!rs.next()) {
 			if (rs1.next()) {
@@ -515,8 +518,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				
 				pstmt.executeUpdate();
 				
-				if (con != null) {
-					con.close();
+				if (dao.getCon() != null) {
+					dao.getCon().close();
 				}
 				
 				return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully stored");
@@ -531,25 +534,25 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// assigns package to delivery officer and store assignment data in database
 	@Override
 	public PackageDeliveryResponse assignPackage(PackageDeliveryRequest pkg) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-		con = DriverManager.getConnection(url, "root", "");
+//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
+//		con = DriverManager.getConnection(url, "root", "");
+//		
+//		String query = "INSERT INTO m_package_assignment (packageRegistrationNo,assignerId,assigneeId) "
+//				+ "VALUES(?,?,?)";
+//		String deleteFromStore = "DELETE FROM m_package_store "
+//				+ "WHERE packageRegistrationNo=?";
 		
-		String query = "INSERT INTO m_package_assignment (packageRegistrationNo,assignerId,assigneeId) "
-				+ "VALUES(?,?,?)";
-		String deleteFromStore = "DELETE FROM m_package_store "
-				+ "WHERE packageRegistrationNo=?";
-		
-		PreparedStatement pstmt = con.prepareStatement(query);
-		PreparedStatement pstmt1 = con.prepareStatement(deleteFromStore);
+		PreparedStatement pstmt = dao.packageAssignment();
+		PreparedStatement pstmt1 = dao.packageDeleteFromStore();
 		
 		String checkRegNoQuery = "SELECT packageRegistrationNo FROM m_package_assignment "
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
 		String checkRegNoQueryInStore = "SELECT packageRegistrationNo FROM m_package_store "
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
 		
-		ResultSet rs = getData(checkRegNoQuery);
-		ResultSet rs1 = getData(checkRegNoQueryInStore);
+		ResultSet rs = dao.getData(checkRegNoQuery);
+		ResultSet rs1 = dao.getData(checkRegNoQueryInStore);
 		
 		if (!rs.next()) {
 			if (rs1.next()) {
@@ -576,8 +579,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				pstmt.executeUpdate();
 				pstmt1.executeUpdate();
 				
-				if (con != null) {
-					con.close();
+				if (dao.getCon() != null) {
+					dao.getCon().close();
 				}
 				
 				return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully assigned");
