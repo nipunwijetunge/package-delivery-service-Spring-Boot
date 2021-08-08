@@ -7,10 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.springframework.stereotype.Repository;
+
 import com.google.gson.JsonObject;
 import com.nipun.ABXpackagedeliveryservice.dto.PersonDTO;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 
+@Repository
 public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	private static Connection con = null;
 	

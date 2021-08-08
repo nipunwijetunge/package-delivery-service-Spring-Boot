@@ -1,7 +1,13 @@
 package com.nipun.ABXpackagedeliveryservice.response;
 
-import com.google.gson.JsonArray;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.JsonNode;
+
+@JsonFormat
 public class PackageDeliveryResponse {
 	public static final int SUCCESS = 0;
 	public static final int ERROR = -1;
@@ -12,8 +18,9 @@ public class PackageDeliveryResponse {
 	private int id;
 	private String status;
 	private String description;
-	private JsonArray returnedData;
-	private PackageRegNoQRResponse packageRegNoQR;
+	//private JsonArray returnedData;
+	private List<JsonNode> returnedData;
+	//private PackageRegNoQRResponse packageRegNoQR;
 	
 	public PackageDeliveryResponse() {
 		super();
@@ -26,18 +33,26 @@ public class PackageDeliveryResponse {
 		this.description = description;
 	}
 
-	public PackageDeliveryResponse(int id, String status, String description, String packageRegNoQR) {
-		this.id = id;
-		this.status = status;
-		this.description = description;
-		this.packageRegNoQR = new PackageRegNoQRResponse(packageRegNoQR);
-	}
+//	public PackageDeliveryResponse(int id, String status, String description, String packageRegNoQR) {
+//		this.id = id;
+//		this.status = status;
+//		this.description = description;
+//		this.packageRegNoQR = new PackageRegNoQRResponse(packageRegNoQR);
+//	}
 	
-	public PackageDeliveryResponse(int id, String status, String description, JsonArray jarr) {
+//	public PackageDeliveryResponse(int id, String status, String description, JsonArray jarr) {
+//		this.id = id;
+//		this.status = status;
+//		this.description = description;
+//		this.returnedData = jarr;
+//	}
+	
+	public PackageDeliveryResponse(int id, String status, String description, List<JsonNode> returnedData) {
+		super();
 		this.id = id;
 		this.status = status;
 		this.description = description;
-		this.returnedData = jarr;
+		this.returnedData = returnedData;
 	}
 
 	public int getId() {
@@ -64,19 +79,26 @@ public class PackageDeliveryResponse {
 		this.description = description;
 	}
 
-	public JsonArray getReturnedData() {
+//	public JsonArray getReturnedData() {
+//		return returnedData;
+//	}
+//
+//	public void setReturnedData(JsonArray returnedData) {
+//		this.returnedData = returnedData;
+//	}
+	public List<JsonNode> getReturnedData() {
 		return returnedData;
 	}
 
-	public void setReturnedData(JsonArray returnedData) {
+	public void setReturnedData(List<JsonNode> returnedData) {
 		this.returnedData = returnedData;
 	}
-
-	public PackageRegNoQRResponse getPackageRegNoQR() {
-		return packageRegNoQR;
-	}
-
-	public void setPackageRegNoQR(PackageRegNoQRResponse packageRegNoQR) {
-		this.packageRegNoQR = packageRegNoQR;
-	}
+	
+//	public PackageRegNoQRResponse getPackageRegNoQR() {
+//		return packageRegNoQR;
+//	}
+//
+//	public void setPackageRegNoQR(PackageRegNoQRResponse packageRegNoQR) {
+//		this.packageRegNoQR = packageRegNoQR;
+//	}
 }

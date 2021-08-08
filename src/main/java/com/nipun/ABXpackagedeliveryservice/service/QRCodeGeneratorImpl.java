@@ -2,10 +2,14 @@ package com.nipun.ABXpackagedeliveryservice.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -34,7 +38,12 @@ public class QRCodeGeneratorImpl implements QRCodeGenerator{
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			MatrixToImageWriter.writeToStream(bitMatrix, "png", bos);
 			
-			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package Successfully registered!", new String(Base64.getEncoder().encode(bos.toByteArray()), "UTF-8"));
+			String qrBase64String = new String(Base64.getEncoder().encode(bos.toByteArray()), "UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			List<JsonNode> list = new ArrayList<>();
+			list.add(mapper.readTree(qrBase64String));
+			
+			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package Successfully registered!", list);
 			
 		} catch (Exception e) {
 			PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Something's wrong!");

@@ -8,7 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,6 +27,7 @@ import com.nipun.ABXpackagedeliveryservice.dto.PersonDTO;
 import com.nipun.ABXpackagedeliveryservice.request.PackageDeliveryRequest;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 
+@Service
 public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	private static PackageDeliveryServiceImpl instance = null;
 	private static Connection con = null;
@@ -47,6 +57,112 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return rs;
 	}
 	
+	@Override
+	public PackageDeliveryResponse getCustomerIdTypes() throws Exception {
+		String query = "SELECT * FROM customeridtype";
+		ResultSet rs = dao.getData(query);
+		
+		//JsonArray jarr = new JsonArray();
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			JsonObject jObj = new JsonObject();
+			ObjectMapper mapper = new ObjectMapper();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jObj.addProperty(columnName, value);
+			}
+			list.add(mapper.readTree(jObj.toString()));
+		}
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Customer ID type data", list);
+		return response;
+	}
+	
+	@Override
+	public PackageDeliveryResponse getPackageTypes() throws Exception {
+		String query = "SELECT * FROM packagetype";
+		ResultSet rs = dao.getData(query);
+		
+		//JsonArray jarr = new JsonArray();
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			JsonObject jObj = new JsonObject();
+			ObjectMapper mapper = new ObjectMapper();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jObj.addProperty(columnName, value);
+			}
+			list.add(mapper.readTree(jObj.toString()));
+		}
+		
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package type data", list);
+		return response;
+	}
+	
+	@Override
+	public PackageDeliveryResponse getPackageWeightCategories() throws Exception {
+		String query = "SELECT * FROM packageweightcategory";
+		ResultSet rs = dao.getData(query);
+		
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			JsonObject jObj = new JsonObject();
+			ObjectMapper mapper = new ObjectMapper();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jObj.addProperty(columnName, value);
+			}
+			list.add(mapper.readTree(jObj.toString()));
+		}
+		
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package weight category data", list);
+		return response;
+	}
+	
+	// retrieves delivery types from the DB
+	@Override
+	public PackageDeliveryResponse getDeliveryTypes() throws Exception {
+		String query = "SELECT * FROM deliverytype";
+		ResultSet rs = getData(query);
+		
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			JsonObject jObj = new JsonObject();
+			ObjectMapper mapper = new ObjectMapper();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jObj.addProperty(columnName, value);
+			}
+			list.add(mapper.readTree(jObj.toString()));
+		}
+		
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package weight category data", list);
+		return response;
+	}
+	
 	// retrieves bearer or receiver data from the DB
 	private JsonArray getCustomerData(String query) throws Exception {
 		ResultSet rs = dao.getData(query);
@@ -62,8 +178,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			}
 			jarr.add(jObj);
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return jarr;
 	}
@@ -82,8 +198,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				return value;
 			}
 		}
-		if (con != null) {
-			con.close();
+		if (dao.getCon() != null) {
+			dao.getCon().close();
 		}
 		return null;
 	}

@@ -7,4 +7,8 @@ public interface PackageDeliveryService {
 	PackageDeliveryResponse registerPackage(PackageDeliveryRequest pkg) throws Exception;
 	PackageDeliveryResponse storePackage(PackageDeliveryRequest pkg) throws Exception;
 	PackageDeliveryResponse assignPackage(PackageDeliveryRequest pkg) throws Exception;
+	PackageDeliveryResponse getCustomerIdTypes() throws Exception;
+	PackageDeliveryResponse getPackageTypes() throws Exception;
+	PackageDeliveryResponse getPackageWeightCategories() throws Exception;
+	PackageDeliveryResponse getDeliveryTypes() throws Exception;
 }
