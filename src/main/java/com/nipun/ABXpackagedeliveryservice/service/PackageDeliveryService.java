@@ -1,5 +1,6 @@
 package com.nipun.ABXpackagedeliveryservice.service;
 
+import com.nipun.ABXpackagedeliveryservice.dto.PackageDTO;
 import com.nipun.ABXpackagedeliveryservice.request.PackageDeliveryRequest;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 
@@ -11,4 +12,6 @@ public interface PackageDeliveryService {
 	PackageDeliveryResponse getPackageTypes() throws Exception;
 	PackageDeliveryResponse getPackageWeightCategories() throws Exception;
 	PackageDeliveryResponse getDeliveryTypes() throws Exception;
+	PackageDeliveryResponse getStoreData() throws Exception;
+	PackageDeliveryResponse getCupboardData(PackageDTO pkg) throws Exception;
 }

@@ -1,28 +1,23 @@
 package com.nipun.ABXpackagedeliveryservice.service;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nipun.ABXpackagedeliveryservice.dao.PackageDeliveryServiceDAO;
 import com.nipun.ABXpackagedeliveryservice.dao.PackageDeliveryServiceDAOImpl;
+import com.nipun.ABXpackagedeliveryservice.dto.PackageDTO;
 import com.nipun.ABXpackagedeliveryservice.dto.PersonDTO;
 import com.nipun.ABXpackagedeliveryservice.request.PackageDeliveryRequest;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
@@ -30,7 +25,6 @@ import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 @Service
 public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	private static PackageDeliveryServiceImpl instance = null;
-	private static Connection con = null;
 	private static DecimalFormat decimalFormatter = new DecimalFormat("00000");
 	
 	private PackageDeliveryServiceDAO dao = new PackageDeliveryServiceDAOImpl();
@@ -46,34 +40,22 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return instance;
 	}
 	
-	private ResultSet getData(String query) throws Exception{
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-		con = DriverManager.getConnection(url, "root", "");
-	
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		
-		return rs;
-	}
-	
 	@Override
 	public PackageDeliveryResponse getCustomerIdTypes() throws Exception {
 		String query = "SELECT * FROM customeridtype";
 		ResultSet rs = dao.getData(query);
 		
-		//JsonArray jarr = new JsonArray();
 		List<JsonNode> list = new ArrayList<>();
 		while(rs.next()) {
 			int totalColumns = rs.getMetaData().getColumnCount();
-			JsonObject jObj = new JsonObject();
 			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
 			for (int i = 1; i <= totalColumns; i++) {
 				String columnName = rs.getMetaData().getColumnLabel(i);
 				String value = rs.getString(columnName);
-				jObj.addProperty(columnName, value);
+				jNode.put(columnName, value);
 			}
-			list.add(mapper.readTree(jObj.toString()));
+			list.add(jNode);
 		}
 		if (dao.getCon() != null) {
 			dao.getCon().close();
@@ -88,18 +70,17 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		String query = "SELECT * FROM packagetype";
 		ResultSet rs = dao.getData(query);
 		
-		//JsonArray jarr = new JsonArray();
 		List<JsonNode> list = new ArrayList<>();
 		while(rs.next()) {
 			int totalColumns = rs.getMetaData().getColumnCount();
-			JsonObject jObj = new JsonObject();
 			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
 			for (int i = 1; i <= totalColumns; i++) {
 				String columnName = rs.getMetaData().getColumnLabel(i);
 				String value = rs.getString(columnName);
-				jObj.addProperty(columnName, value);
+				jNode.put(columnName, value);
 			}
-			list.add(mapper.readTree(jObj.toString()));
+			list.add(jNode);
 		}
 		
 		if (dao.getCon() != null) {
@@ -118,14 +99,14 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		List<JsonNode> list = new ArrayList<>();
 		while(rs.next()) {
 			int totalColumns = rs.getMetaData().getColumnCount();
-			JsonObject jObj = new JsonObject();
 			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
 			for (int i = 1; i <= totalColumns; i++) {
 				String columnName = rs.getMetaData().getColumnLabel(i);
 				String value = rs.getString(columnName);
-				jObj.addProperty(columnName, value);
+				jNode.put(columnName, value);
 			}
-			list.add(mapper.readTree(jObj.toString()));
+			list.add(jNode);
 		}
 		
 		if (dao.getCon() != null) {
@@ -140,19 +121,19 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	@Override
 	public PackageDeliveryResponse getDeliveryTypes() throws Exception {
 		String query = "SELECT * FROM deliverytype";
-		ResultSet rs = getData(query);
+		ResultSet rs = dao.getData(query);
 		
 		List<JsonNode> list = new ArrayList<>();
 		while(rs.next()) {
 			int totalColumns = rs.getMetaData().getColumnCount();
-			JsonObject jObj = new JsonObject();
 			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
 			for (int i = 1; i <= totalColumns; i++) {
 				String columnName = rs.getMetaData().getColumnLabel(i);
 				String value = rs.getString(columnName);
-				jObj.addProperty(columnName, value);
+				jNode.put(columnName, value);
 			}
-			list.add(mapper.readTree(jObj.toString()));
+			list.add(jNode);
 		}
 		
 		if (dao.getCon() != null) {
@@ -160,6 +141,58 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		
 		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package weight category data", list);
+		return response;
+	}
+	
+	@Override
+	public PackageDeliveryResponse getStoreData() throws Exception {
+		String query = "SELECT * FROM store";
+		ResultSet rs = dao.getData(query);
+		
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jNode.put(columnName, value);
+			}
+			list.add(jNode);
+		}
+		
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Store data", list);
+		return response;
+	}
+	
+	@Override
+	public PackageDeliveryResponse getCupboardData(PackageDTO pkg) throws Exception {
+		String query = "SELECT cupboardID FROM cupboard WHERE storeroomID="+pkg.getStoreId();
+		ResultSet rs = dao.getData(query);
+		
+		List<JsonNode> list = new ArrayList<>();
+		while(rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode jNode = mapper.createObjectNode();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				jNode.put(columnName, value);
+			}
+			list.add(jNode);
+		}
+		
+		if (dao.getCon() != null) {
+			dao.getCon().close();
+		}
+		
+		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Cupboard data", list);
 		return response;
 	}
 	
@@ -228,48 +261,6 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	private String setDeliveryTypeData(int deliveryTypeId) throws Exception {
 		String query = "SELECT deliveryTypeId FROM deliverytype "
 				+ "WHERE deliveryTypeId="+deliveryTypeId;
-		ResultSet rs = dao.getData(query);
-		
-		while (rs.next()) {
-			int totalColumns = rs.getMetaData().getColumnCount();
-			for (int i = 1; i <= totalColumns; i++) {
-				String columnName = rs.getMetaData().getColumnLabel(i);
-				String value = rs.getString(columnName);
-				return value;
-			}
-		}
-		if (dao.getCon() != null) {
-			dao.getCon().close();
-		}
-		return null;
-	}
-	
-	// returns the bearer or receiver details according to the query
-//	private PersonDTO setCustomerData(PersonDTO person, String query) throws Exception {
-//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-//		con = DriverManager.getConnection(url, "root", "");
-//		
-//		PreparedStatement pstmt = con.prepareStatement(query);
-//		pstmt.setString(1, person.getId());
-//		pstmt.setString(2, person.getName());
-//		pstmt.setString(3, person.getAddress());
-//		pstmt.setString(4, person.getPhone());
-//		pstmt.setString(5, person.getEmail());
-//		pstmt.setString(6, person.getIdType());
-//		
-//		pstmt.executeUpdate();
-//		
-//		if (con != null) {
-//			con.close();
-//		}
-//		return person;
-//	}
-	
-	// returns respective customerIdTypeId to customerIdType
-	private String setCustomerIdTypedata(String customerIdType) throws Exception {
-		String query = "SELECT idTypeID FROM customeridtype "
-				+ "WHERE idType='"+customerIdType+"'";
 		ResultSet rs = dao.getData(query);
 		
 		while (rs.next()) {
@@ -357,6 +348,11 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			for (int i = 1; i <= totalColumns; i++) {
 				String columnName = rs.getMetaData().getColumnLabel(i);
 				String value = rs.getString(columnName);
+				
+				if (dao.getCon() != null) {
+					dao.getCon().close();
+				}
+				
 				return value;
 			}
 		}
@@ -365,38 +361,6 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		return null;
 	}
-	
-	// updates sequence number of each package type
-//	private void updateSeqNo(String packageTypeId) throws Exception {
-//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-//		con = DriverManager.getConnection(url, "root", "");
-//		
-//		String selectQuery = "SELECT seqNo FROM m_package_sequence "
-//				+ "WHERE packageTypeId='"+packageTypeId+"'";
-//		ResultSet rs = dao.getData(selectQuery);
-//		
-//		JsonObject jObj = new JsonObject();
-//		while (rs.next()) {
-//			int totalColumns = rs.getMetaData().getColumnCount();
-//			for (int i = 1; i <= totalColumns; i++) {
-//				String columnName = rs.getMetaData().getColumnLabel(i);
-//				int value = rs.getInt(columnName);
-//				jObj.addProperty(columnName, value);
-//			}
-//		}
-//		
-//		String updateQuery = "UPDATE m_package_sequence SET seqNo=? "
-//				+ "WHERE packageTypeId='"+packageTypeId+"'";
-//		PreparedStatement pstmt = con.prepareStatement(updateQuery);
-//		
-//		pstmt.setInt(1, Integer.parseInt(jObj.get("seqNo").getAsString())+1);
-//		pstmt.executeUpdate();
-//		
-//		if (con != null) {
-//			con.close();
-//		}
-//	}
 	
 	// generates package registration number for each package registration
 	private String generatePackageRegNo(String packageTypeId) throws Exception {
@@ -422,22 +386,6 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			dao.getCon().close();
 		}
 		return packageRegistrationNo;
-	}
-	
-	// updates package status in m_package_registry table on package registry, storing and assignment
-	private void updatePackageStatus(String status, String packageRegistrationNo) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-		con = DriverManager.getConnection(url, "root", "");
-		
-		String query = "UPDATE m_package_registry "
-				+ "SET packageStatus=? "
-				+ "WHERE packageRegistrationNo='"+packageRegistrationNo+"'";
-		PreparedStatement pstmt = con.prepareStatement(query);
-		
-		pstmt.setString(1, status);
-		
-		pstmt.executeUpdate();
 	}
 	
 	// validates customer id number
@@ -485,14 +433,6 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// registers package and store registration data in database
 	@Override
 	public PackageDeliveryResponse registerPackage(PackageDeliveryRequest pkg) throws Exception {
-//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-//		con = DriverManager.getConnection(url, "root", "");
-//		
-//		String query = "INSERT INTO m_package_registry (packageRegistrationNo,packageTypeId,packageWeightRangeId,bearerId,recieverId,deliveryTypeId,deliveryDate,packageStatus) "
-//				+ "VALUES(?,?,?,?,?,?,?,?)";
-//		PreparedStatement pstmt = con.prepareStatement(query);
-		
 		PreparedStatement pstmt = dao.packageRegistration();
 		
 		String packageRegistrationNo = generatePackageRegNo(setPackageTypeData(pkg.getItem().getPackageTypeId()));
@@ -599,66 +539,57 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// stores package and save store data in database
 	@Override
 	public PackageDeliveryResponse storePackage(PackageDeliveryRequest pkg) throws Exception {
-//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-//		con = DriverManager.getConnection(url, "root", "");
-//		
-//		String query = "INSERT INTO m_package_store (packageRegistrationNo,storeID,cupboardID,storedOfficerID) "
-//				+ "VALUES(?,?,?,?)";
-//		PreparedStatement pstmt = con.prepareStatement(query);
 		PreparedStatement pstmt = dao.packageStoring();
 		
 		String checkRegNoQuery = "SELECT packageRegistrationNo FROM m_package_store "
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
 		String checkPackageInRegistry = "SELECT packageRegistrationNo FROM m_package_registry "
 				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
-		//String checkPackageWhetherAssigned = "SELECT packageRegistrationNo FROM m_package_assignment WHERE packageRegistrationNo='"+pkg.getPackageRegistrationNo()+"'";
+		String checkPackageWhetherAssigned = "SELECT packageRegistrationNo FROM m_package_assignment "
+				+ "WHERE packageRegistrationNo='"+pkg.getItem().getPackageRegistrationNo()+"'";
 		
 		ResultSet rs = dao.getData(checkRegNoQuery);
 		ResultSet rs1 = dao.getData(checkPackageInRegistry);
-		//ResultSet rs3 = dao.getData(checkPackageWhetherAssigned);
+		ResultSet rs3 = dao.getData(checkPackageWhetherAssigned);
 		
-		if (!rs.next()) {
-			if (rs1.next()) {
-				pstmt.setString(1, setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
-				pstmt.setInt(2, setStoreData(pkg.getItem().getStoreId()));
-				pstmt.setInt(3, setCupboardData(pkg.getItem().getCupboardId()));
-				
-				boolean employeeValidation = pkg.getItem().getStoredOfficer().getId().matches("^[SDRM][0-9]{3}$");
-				if (!employeeValidation) {
-					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid employee ID");
+		if(!rs3.next()) {
+			if (!rs.next()) {
+				if (rs1.next()) {
+					pstmt.setString(1, setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
+					pstmt.setInt(2, setStoreData(pkg.getItem().getStoreId()));
+					pstmt.setInt(3, setCupboardData(pkg.getItem().getCupboardId()));
+					
+					boolean employeeValidation = pkg.getItem().getStoredOfficer().getId().matches("^[SDRM][0-9]{3}$");
+					
+					if (!employeeValidation || setEmployeeData(pkg.getItem().getStoredOfficer().getId()) == null) {
+						return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid employee ID");
+					} else {
+						pstmt.setString(4, setEmployeeData(pkg.getItem().getStoredOfficer().getId()));
+					}
+					
+					dao.updatePackageStatus("Stored", setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
+					
+					pstmt.executeUpdate();
+					
+					if (dao.getCon() != null) {
+						dao.getCon().close();
+					}
+					
+					return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully stored");
 				} else {
-					pstmt.setString(4, setEmployeeData(pkg.getItem().getStoredOfficer().getId()));
+					return new PackageDeliveryResponse(PackageDeliveryResponse.NO_DATA_FOUND, "FAILED", "No such package has been registered");
 				}
-				updatePackageStatus("Stored", setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
-				
-				pstmt.executeUpdate();
-				
-				if (dao.getCon() != null) {
-					dao.getCon().close();
-				}
-				
-				return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully stored");
 			} else {
-				return new PackageDeliveryResponse(PackageDeliveryResponse.NO_DATA_FOUND, "FAILED", "No such package has been registered");
+				return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been stored");
 			}
 		} else {
-			return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been stored");
+			return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been assigned");
 		}
 	}
 
 	// assigns package to delivery officer and store assignment data in database
 	@Override
 	public PackageDeliveryResponse assignPackage(PackageDeliveryRequest pkg) throws Exception {
-//		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-//		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
-//		con = DriverManager.getConnection(url, "root", "");
-//		
-//		String query = "INSERT INTO m_package_assignment (packageRegistrationNo,assignerId,assigneeId) "
-//				+ "VALUES(?,?,?)";
-//		String deleteFromStore = "DELETE FROM m_package_store "
-//				+ "WHERE packageRegistrationNo=?";
-		
 		PreparedStatement pstmt = dao.packageAssignment();
 		PreparedStatement pstmt1 = dao.packageDeleteFromStore();
 		
@@ -675,20 +606,22 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				pstmt.setString(1, setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
 				
 				boolean employeeValidation = pkg.getItem().getAssigner().getId().matches("^[SDRM][0-9]{3}$");
-				if (!employeeValidation) {
+				
+				if (!employeeValidation || setEmployeeData(pkg.getItem().getAssigner().getId()) == null) {
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid assigner ID");
 				} else {
 					pstmt.setString(2, setEmployeeData(pkg.getItem().getAssigner().getId()));
 				}
 				
 				employeeValidation = pkg.getItem().getAssignee().getId().matches("^[SDRM][0-9]{3}$");
-				if (!employeeValidation) {
+				
+				if (!employeeValidation || setEmployeeData(pkg.getItem().getAssignee().getId()) == null) {
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid assignee ID");
 				} else {
 					pstmt.setString(3, setEmployeeData(pkg.getItem().getAssignee().getId()));
 				}
 				
-				updatePackageStatus("Assigned", setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
+				dao.updatePackageStatus("Assigned", setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
 				
 				pstmt1.setString(1, setPackageRegNoData(pkg.getItem().getPackageRegistrationNo()));
 				

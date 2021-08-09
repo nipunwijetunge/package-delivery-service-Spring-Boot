@@ -18,7 +18,7 @@ public class PackageDeliveryResponse {
 	private int id;
 	private String status;
 	private String description;
-	//private JsonArray returnedData;
+	//private String packageRegistrationNo;
 	private List<JsonNode> returnedData;
 	//private PackageRegNoQRResponse packageRegNoQR;
 	
@@ -33,11 +33,11 @@ public class PackageDeliveryResponse {
 		this.description = description;
 	}
 
-//	public PackageDeliveryResponse(int id, String status, String description, String packageRegNoQR) {
+//	public PackageDeliveryResponse(int id, String status, String description, String packageRegistrationNo) {
 //		this.id = id;
 //		this.status = status;
 //		this.description = description;
-//		this.packageRegNoQR = new PackageRegNoQRResponse(packageRegNoQR);
+//		this.packageRegistrationNo = packageRegistrationNo;
 //	}
 	
 //	public PackageDeliveryResponse(int id, String status, String description, JsonArray jarr) {
@@ -86,6 +86,7 @@ public class PackageDeliveryResponse {
 //	public void setReturnedData(JsonArray returnedData) {
 //		this.returnedData = returnedData;
 //	}
+	
 	public List<JsonNode> getReturnedData() {
 		return returnedData;
 	}
@@ -93,6 +94,14 @@ public class PackageDeliveryResponse {
 	public void setReturnedData(List<JsonNode> returnedData) {
 		this.returnedData = returnedData;
 	}
+
+//	public String getPackageRegistrationNo() {
+//		return packageRegistrationNo;
+//	}
+//
+//	public void setPackageRegistrationNo(String packageRegistrationNo) {
+//		this.packageRegistrationNo = packageRegistrationNo;
+//	}
 	
 //	public PackageRegNoQRResponse getPackageRegNoQR() {
 //		return packageRegNoQR;

@@ -39,6 +39,26 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 		return rs;
 	}
 	
+	// returns respective customerIdTypeId to customerIdType
+	private String setCustomerIdTypedata(String customerIdType) throws Exception {
+		String query = "SELECT idTypeID FROM customeridtype "
+				+ "WHERE idType='"+customerIdType+"'";
+		ResultSet rs = getData(query);
+		
+		while (rs.next()) {
+			int totalColumns = rs.getMetaData().getColumnCount();
+			for (int i = 1; i <= totalColumns; i++) {
+				String columnName = rs.getMetaData().getColumnLabel(i);
+				String value = rs.getString(columnName);
+				return value;
+			}
+		}
+		if (con != null) {
+			con.close();
+		}
+		return null;
+	}
+	
 	@Override
 	public PersonDTO setCustomerData(PersonDTO customer, String query) throws Exception {
 		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -51,7 +71,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 		pstmt.setString(3, customer.getAddress());
 		pstmt.setString(4, customer.getPhone());
 		pstmt.setString(5, customer.getEmail());
-		pstmt.setString(6, customer.getIdType());
+		pstmt.setString(6, setCustomerIdTypedata(customer.getIdType()));
 		
 		pstmt.executeUpdate();
 		

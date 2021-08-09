@@ -8,14 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Bean;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.nipun.ABXpackagedeliveryservice.dto.PackageRegNoQrDTO;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 
 public class QRCodeGeneratorImpl implements QRCodeGenerator{
@@ -38,10 +42,15 @@ public class QRCodeGeneratorImpl implements QRCodeGenerator{
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			MatrixToImageWriter.writeToStream(bitMatrix, "png", bos);
 			
-			String qrBase64String = new String(Base64.getEncoder().encode(bos.toByteArray()), "UTF-8");
+			String qrBase64String = Base64.getEncoder().encodeToString(bos.toByteArray());
+			PackageRegNoQrDTO qrDto = new PackageRegNoQrDTO(qrBase64String);
+			
+			//JsonObject JObj = new JsonObject();
 			ObjectMapper mapper = new ObjectMapper();
+			JsonNode jNode = mapper.valueToTree(qrDto);
+			
 			List<JsonNode> list = new ArrayList<>();
-			list.add(mapper.readTree(qrBase64String));
+			list.add(jNode);
 			
 			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package Successfully registered!", list);
 			
