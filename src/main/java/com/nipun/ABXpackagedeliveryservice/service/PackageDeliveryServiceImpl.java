@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +28,7 @@ import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	private static PackageDeliveryServiceImpl instance = null;
 	private static DecimalFormat decimalFormatter = new DecimalFormat("00000");
+	private static final Logger LOGGER = LogManager.getLogger(PackageDeliveryServiceImpl.class);
 	
 	private PackageDeliveryServiceDAO dao = new PackageDeliveryServiceDAOImpl();
 	
@@ -42,6 +45,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	@Override
 	public PackageDeliveryResponse getCustomerIdTypes() throws Exception {
+		LOGGER.info("PackageDeliveryServiceImpl | getCustomerIdTypes called");
 		String query = "SELECT * FROM customeridtype";
 		ResultSet rs = dao.getData(query);
 		
@@ -62,6 +66,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		
 		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Customer ID type data", list);
+		LOGGER.info("PackageDeliveryServiceImpl | getCustomerIdTypes end");
 		return response;
 	}
 	
