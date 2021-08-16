@@ -1,18 +1,17 @@
 package com.nipun.ABXpackagedeliveryservice.service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.annotation.Bean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -23,6 +22,7 @@ import com.nipun.ABXpackagedeliveryservice.dto.PackageRegNoQrDTO;
 import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 
 public class QRCodeGeneratorImpl implements QRCodeGenerator{
+	private static final Logger LOGGER = LogManager.getLogger(PackageDeliveryServiceImpl.class);
 	
 	// generates QR code in png format and encode into a base64 string
 	@Override
@@ -55,6 +55,7 @@ public class QRCodeGeneratorImpl implements QRCodeGenerator{
 			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package Successfully registered!", list);
 			
 		} catch (Exception e) {
+			LOGGER.error("PackageDeliveryServiceImpl | something went wrong when generating qr code");
 			PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Something's wrong!");
 			e.printStackTrace();
 			return response;

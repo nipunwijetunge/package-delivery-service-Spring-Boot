@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,7 +45,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	@Override
 	public PackageDeliveryResponse getCustomerIdTypes() throws Exception {
-		LOGGER.info("PackageDeliveryServiceImpl | getCustomerIdTypes called");
+		LOGGER.debug("PackageDeliveryServiceImpl | getCustomerIdTypes method called");
+		
 		String query = "SELECT * FROM customeridtype";
 		ResultSet rs = dao.getData(query);
 		
@@ -66,12 +67,13 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		}
 		
 		PackageDeliveryResponse response = new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Customer ID type data", list);
-		LOGGER.info("PackageDeliveryServiceImpl | getCustomerIdTypes end");
 		return response;
 	}
 	
 	@Override
 	public PackageDeliveryResponse getPackageTypes() throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getPackageTypes method called");
+		
 		String query = "SELECT * FROM packagetype";
 		ResultSet rs = dao.getData(query);
 		
@@ -98,6 +100,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	@Override
 	public PackageDeliveryResponse getPackageWeightCategories() throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getPackageWeightCategories method called");
+		
 		String query = "SELECT * FROM packageweightcategory";
 		ResultSet rs = dao.getData(query);
 		
@@ -125,6 +129,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// retrieves delivery types from the DB
 	@Override
 	public PackageDeliveryResponse getDeliveryTypes() throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getDeliveryTypes method called");
+		
 		String query = "SELECT * FROM deliverytype";
 		ResultSet rs = dao.getData(query);
 		
@@ -151,6 +157,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	@Override
 	public PackageDeliveryResponse getStoreData() throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getStoreData method called");
+		
 		String query = "SELECT * FROM store";
 		ResultSet rs = dao.getData(query);
 		
@@ -177,6 +185,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	@Override
 	public PackageDeliveryResponse getCupboardData(PackageDTO pkg) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getCupboardData method called");
+		
 		String query = "SELECT cupboardID FROM cupboard WHERE storeroomID="+pkg.getStoreId();
 		ResultSet rs = dao.getData(query);
 		
@@ -203,6 +213,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// retrieves bearer or receiver data from the DB
 	private JsonArray getCustomerData(String query) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | getCustomerData method called");
+		
 		ResultSet rs = dao.getData(query);
 		JsonArray jarr = new JsonArray();
 		
@@ -224,6 +236,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		
 	// returns package type id according to selected value to store in DB
 	private String setPackageTypeData(String packageTypeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setPackageTypeData method called to retrieve relevent package type data from DB");
+		
 		String query = "SELECT packageTypeId FROM packagetype "
 				+ "WHERE packageTypeId='"+packageTypeId+"'";
 		ResultSet rs = dao.getData(query);
@@ -244,6 +258,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns weight category id to store in package table
 	private String setWeightData(int weightRangeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setWeightData method called to retrieve relevent weight data from DB");
+		
 		String query = "SELECT weightCategoryId FROM packageweightcategory "
 				+ "WHERE weightCategoryId="+weightRangeId;
 		ResultSet rs = dao.getData(query);
@@ -264,6 +280,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns respective delivery type id to delivery type
 	private String setDeliveryTypeData(int deliveryTypeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setDeliveryTypeData method called to retrieve relevent delivery type data from DB");
+		
 		String query = "SELECT deliveryTypeId FROM deliverytype "
 				+ "WHERE deliveryTypeId="+deliveryTypeId;
 		ResultSet rs = dao.getData(query);
@@ -284,6 +302,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns package registration number to from m_package_registry table
 	private String setPackageRegNoData(String packageRegistrationNo) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setPackageRegNoData method called to retrieve relevent package Reg No. from DB");
+		
 		String query = "SELECT packageRegistrationNo FROM m_package_registry "
 				+ "WHERE packageRegistrationNo='"+packageRegistrationNo+"'";
 		ResultSet rs = dao.getData(query);
@@ -304,6 +324,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns respective store room id to cupboard id in cupboard table
 	private int setStoreData(int storeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setStoreData method called to retrieve relevent store data from DB");
+		
 		String query = "SELECT storeID FROM store "
 				+ "WHERE storeID="+storeId;
 		ResultSet rs = dao.getData(query);
@@ -324,6 +346,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns cupboard id from cupboard table if exists
 	private int setCupboardData(int cupboardId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setCupboardData method called to retrieve relevent cupboard data from DB");
+		
 		String query = "SELECT cupboardID FROM cupboard "
 				+ "WHERE cupboardID="+cupboardId;
 		ResultSet rs = dao.getData(query);
@@ -344,6 +368,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// returns employee id from employee table if exists
 	private String setEmployeeData(String employeeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | setEmployeeData method called to retrieve relevent employee data from DB");
+		
 		String query = "SELECT employeeID FROM employee "
 				+ "WHERE employeeID='"+employeeId+"'";
 		ResultSet rs = dao.getData(query);
@@ -369,6 +395,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	
 	// generates package registration number for each package registration
 	private String generatePackageRegNo(String packageTypeId) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | generatePackageRegNo method called");
+		
 		dao.updateSeqNo(packageTypeId);
 		String query = "SELECT YEAR(year) AS year, seqNo, packageTypeId "
 				+ "FROM m_package_sequence "
@@ -390,47 +418,63 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		if (dao.getCon() != null) {
 			dao.getCon().close();
 		}
+		LOGGER.debug("PackageDeliveryServiceImpl | Package Registration No. generated");
 		return packageRegistrationNo;
 	}
 	
 	// validates customer id number
 	private PackageDeliveryResponse validateCustomerDetails(int customerIdTypeId, String customerId) {
+		LOGGER.debug("PackageDeliveryServiceImpl | validateCustomerDetails method called");
+		
 		switch (customerIdTypeId) {
 			case 1:
 				if (customerId.matches("^[0-9]{9}[x|X|v|V]|[0-9]{12}$")) {
+					LOGGER.info("PackageDeliveryServiceImpl | valid NIC number");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "NIC number is valid");
 				} else {
+					LOGGER.error("PackageDeliveryServiceImpl | invalid NIC number");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "NIC number is invalid");
 				}
 				
 			case 2:
 				if (customerId.matches("^[N|OL|D][0-9]{7}$")) {
+					LOGGER.info("PackageDeliveryServiceImpl | valid Passport Number");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Passport number is valid");
 				} else {
+					LOGGER.error("PackageDeliveryServiceImpl | invalid Passport Number");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Passport number is invalid");
 				}
 				
 	//		case 3:
 	//			if (customerId.matches())
 			default:
+				LOGGER.error("PackageDeliveryServiceImpl | invalid id type");
 				return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid ID type");
 		}
 	}
 	
 	// validates phone numbers
 	private PackageDeliveryResponse validatePhoneNumber(String phone) {
+		LOGGER.debug("PackageDeliveryServiceImpl | validatePhoneNumber method called");
+		
 		if (phone.matches("^[0-9]{10}$")) {
+			LOGGER.debug("PackageDeliveryServiceImpl | valid Passport Number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Phone number is valid");
 		} else {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid Passport Number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Phone number is invalid");
 		}
 	}
 	
 	// validate email
 	private PackageDeliveryResponse validateEmail(String email) {
+		LOGGER.debug("PackageDeliveryServiceImpl | validateEmail method called");
+		
 		if (email.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
+			LOGGER.debug("PackageDeliveryServiceImpl | valid Passport Number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Email is valid");
 		} else {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid Passport Number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Email is invalid");
 		}
 	}
@@ -438,6 +482,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// registers package and store registration data in database
 	@Override
 	public PackageDeliveryResponse registerPackage(PackageDeliveryRequest pkg) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | registerPackage method called");
+		
 		PreparedStatement pstmt = dao.packageRegistration();
 		
 		String packageRegistrationNo = generatePackageRegNo(setPackageTypeData(pkg.getItem().getPackageTypeId()));
@@ -456,14 +502,17 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		PersonDTO bearer;
 		
 		if (!bearerIdFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid bearer ID");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Bearer ID is invalid");
 		}
 		
 		if (!bearerPhoneFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid bearer phone number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Bearer phone is invalid");
 		} 
 		
 		if (!bearerEmailFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid bearer email");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Bearer email is invalid");
 		}
 		
@@ -478,6 +527,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			if (!bearerExist) {
 				bearer = dao.setCustomerData(pkg.getItem().getBearer(), "INSERT INTO bearer "
 						+ "VALUES(?,?,?,?,?,?)");
+				
+				LOGGER.debug("PackageDeliveryServiceImpl | bearer saved");
 			} else {
 				bearer = pkg.getItem().getBearer();
 				//return new Response(Response.DATA_ALREADY_EXISTS, "DATA EXISTS", "Bearer already exists in database");
@@ -496,14 +547,17 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		PersonDTO reciever;
 		
 		if (!receiverIdFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid receiver ID");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Reciever ID is invalid");
 		}
 		
 		if (!receiverPhoneFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid receiver phone number");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Reciever phone is invalid");
 		}
 		
 		if (!receiverEmailFlag) {
+			LOGGER.error("PackageDeliveryServiceImpl | invalid receiver email");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Reciever email is invalid");
 		}
 		
@@ -518,6 +572,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 			if (!recieverExist) {
 				reciever = dao.setCustomerData(pkg.getItem().getReciever(), "INSERT INTO reciever "
 						+ "VALUES(?,?,?,?,?,?)");
+				
+				LOGGER.debug("PackageDeliveryServiceImpl | receiver saved");
 			} else  {
 				reciever = pkg.getItem().getReciever();
 				//return new Response(Response.DATA_ALREADY_EXISTS, "DATA EXISTS", "Reciever already exists in database");
@@ -531,6 +587,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		pstmt.setString(8, "Registered");
 		
 		pstmt.executeUpdate();
+		LOGGER.debug("PackageDeliveryServiceImpl | package registered");
+		
 		
 		if (dao.getCon() != null) {
 			dao.getCon().close();
@@ -544,6 +602,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// stores package and save store data in database
 	@Override
 	public PackageDeliveryResponse storePackage(PackageDeliveryRequest pkg) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | storePackage method called");
+		
 		PreparedStatement pstmt = dao.packageStoring();
 		
 		String checkRegNoQuery = "SELECT packageRegistrationNo FROM m_package_store "
@@ -567,6 +627,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 					boolean employeeValidation = pkg.getItem().getStoredOfficer().getId().matches("^[SDRM][0-9]{3}$");
 					
 					if (!employeeValidation || setEmployeeData(pkg.getItem().getStoredOfficer().getId()) == null) {
+						LOGGER.error("PackageDeliveryServiceImpl | Invalid employee ID");
 						return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid employee ID");
 					} else {
 						pstmt.setString(4, setEmployeeData(pkg.getItem().getStoredOfficer().getId()));
@@ -580,14 +641,18 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 						dao.getCon().close();
 					}
 					
+					LOGGER.debug("PackageDeliveryServiceImpl | package stored");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully stored");
 				} else {
+					LOGGER.warn("PackageDeliveryServiceImpl | package has not been registered");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.NO_DATA_FOUND, "FAILED", "No such package has been registered");
 				}
 			} else {
+				LOGGER.warn("PackageDeliveryServiceImpl | package has already been stored");
 				return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been stored");
 			}
 		} else {
+			LOGGER.warn("PackageDeliveryServiceImpl | package has already been assigned");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been assigned");
 		}
 	}
@@ -595,6 +660,8 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 	// assigns package to delivery officer and store assignment data in database
 	@Override
 	public PackageDeliveryResponse assignPackage(PackageDeliveryRequest pkg) throws Exception {
+		LOGGER.debug("PackageDeliveryServiceImpl | assignPackage method called");
+		
 		PreparedStatement pstmt = dao.packageAssignment();
 		PreparedStatement pstmt1 = dao.packageDeleteFromStore();
 		
@@ -613,6 +680,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				boolean employeeValidation = pkg.getItem().getAssigner().getId().matches("^[SDRM][0-9]{3}$");
 				
 				if (!employeeValidation || setEmployeeData(pkg.getItem().getAssigner().getId()) == null) {
+					LOGGER.error("PackageDeliveryServiceImpl | Invalid assigner ID");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid assigner ID");
 				} else {
 					pstmt.setString(2, setEmployeeData(pkg.getItem().getAssigner().getId()));
@@ -621,6 +689,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 				employeeValidation = pkg.getItem().getAssignee().getId().matches("^[SDRM][0-9]{3}$");
 				
 				if (!employeeValidation || setEmployeeData(pkg.getItem().getAssignee().getId()) == null) {
+					LOGGER.error("PackageDeliveryServiceImpl | Invalid assignee ID");
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid assignee ID");
 				} else {
 					pstmt.setString(3, setEmployeeData(pkg.getItem().getAssignee().getId()));
@@ -637,11 +706,14 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 					dao.getCon().close();
 				}
 				
+				LOGGER.debug("PackageDeliveryServiceImpl | package assigned");
 				return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Package successfully assigned");
 			} else {
+				LOGGER.warn("PackageDeliveryServiceImpl | package not found in store");
 				return new PackageDeliveryResponse(PackageDeliveryResponse.NO_DATA_FOUND, "FAILED", "No such package found in store");
 			}
 		} else {
+			LOGGER.warn("PackageDeliveryServiceImpl | packaghe has already been assigned");
 			return new PackageDeliveryResponse(PackageDeliveryResponse.DATA_ALREADY_EXISTS, "FAILED", "The package has already been assigned");
 		}
 	}

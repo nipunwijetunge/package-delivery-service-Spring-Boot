@@ -29,7 +29,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public ResultSet getData(String query) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -61,7 +61,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public PersonDTO setCustomerData(PersonDTO customer, String query) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -83,7 +83,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public void updateSeqNo(String packageTypeId) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -115,7 +115,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public void updatePackageStatus(String status, String packageRegNo) throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -131,7 +131,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public PreparedStatement packageRegistration() throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -143,7 +143,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public PreparedStatement packageStoring() throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -155,7 +155,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public PreparedStatement packageAssignment() throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
@@ -167,7 +167,7 @@ public class PackageDeliveryServiceDAOImpl implements PackageDeliveryServiceDAO{
 	
 	@Override
 	public PreparedStatement packageDeleteFromStore() throws Exception {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/abxpackagedeliveryservice";
 		con = DriverManager.getConnection(url, "root", "");
 		
