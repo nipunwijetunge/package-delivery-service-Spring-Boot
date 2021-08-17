@@ -43,6 +43,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return instance;
 	}
 	
+	// retrieves customer ID type data from the DB
 	@Override
 	public PackageDeliveryResponse getCustomerIdTypes() throws Exception {
 		LOGGER.debug("PackageDeliveryServiceImpl | getCustomerIdTypes method called");
@@ -70,6 +71,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return response;
 	}
 	
+	// retrieves package type data from the DB
 	@Override
 	public PackageDeliveryResponse getPackageTypes() throws Exception {
 		LOGGER.debug("PackageDeliveryServiceImpl | getPackageTypes method called");
@@ -98,6 +100,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return response;
 	}
 	
+	// retrieves package weight ranges data from the DB
 	@Override
 	public PackageDeliveryResponse getPackageWeightCategories() throws Exception {
 		LOGGER.debug("PackageDeliveryServiceImpl | getPackageWeightCategories method called");
@@ -155,6 +158,7 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return response;
 	}
 	
+	// retrieves store data from the DB
 	@Override
 	public PackageDeliveryResponse getStoreData() throws Exception {
 		LOGGER.debug("PackageDeliveryServiceImpl | getStoreData method called");
@@ -183,11 +187,12 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 		return response;
 	}
 	
+	// retrieves cupboard data from the DB
 	@Override
-	public PackageDeliveryResponse getCupboardData(PackageDTO pkg) throws Exception {
+	public PackageDeliveryResponse getCupboardData(int storeId) throws Exception {
 		LOGGER.debug("PackageDeliveryServiceImpl | getCupboardData method called");
 		
-		String query = "SELECT cupboardID FROM cupboard WHERE storeroomID="+pkg.getStoreId();
+		String query = "SELECT cupboardID FROM cupboard WHERE storeroomID="+storeId;
 		ResultSet rs = dao.getData(query);
 		
 		List<JsonNode> list = new ArrayList<>();

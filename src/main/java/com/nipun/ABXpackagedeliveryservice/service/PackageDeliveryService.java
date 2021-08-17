@@ -13,5 +13,5 @@ public interface PackageDeliveryService {
 	PackageDeliveryResponse getPackageWeightCategories() throws Exception;
 	PackageDeliveryResponse getDeliveryTypes() throws Exception;
 	PackageDeliveryResponse getStoreData() throws Exception;
-	PackageDeliveryResponse getCupboardData(PackageDTO pkg) throws Exception;
+	PackageDeliveryResponse getCupboardData(int storeId) throws Exception;
 }

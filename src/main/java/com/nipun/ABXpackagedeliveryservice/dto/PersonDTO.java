@@ -1,11 +1,21 @@
 package com.nipun.ABXpackagedeliveryservice.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Details about the employees and customers")
 public class PersonDTO {
+	@ApiModelProperty(notes = "Name of the Person")
 	private String name;
+	@ApiModelProperty(notes = "ID type of the person")
 	private String idType;
+	@ApiModelProperty(notes = "ID number of the person")
 	private String id;
+	@ApiModelProperty(notes = "Address of the person")
 	private String address;
+	@ApiModelProperty(notes = "Phone number of the person")
 	private String phone;
+	@ApiModelProperty(notes = "Email of the person")
 	private String email;
 	
 	public PersonDTO() {

@@ -1,23 +1,40 @@
 package com.nipun.ABXpackagedeliveryservice.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Details about the package")
 public class PackageDTO {
+	@ApiModelProperty(notes = "Package registration no.")
 	private String packageRegistrationNo;
+	@ApiModelProperty(notes = "Package Type ID")
 	private String packageTypeId;
+	@ApiModelProperty(notes = "Package weight category ID")
 	private int packageWeightRangeId;
 	
+	@ApiModelProperty(notes = "The bearer of the package")
 	private PersonDTO bearer;
+	@ApiModelProperty(notes = "The receiver of the package")
 	private PersonDTO reciever;
 	
+	@ApiModelProperty(notes = "Package delivery type ID")
 	private int deliveryTypeId;
+	@ApiModelProperty(notes = "Package delivery Date")
 	private String deliveryDate;
 	
+	@ApiModelProperty(notes = "The employee who stored the package.")
 	private PersonDTO storedOfficer;
+	@ApiModelProperty(notes = "The store ID that the package has been stored")
 	private int storeId;
+	@ApiModelProperty(notes = "The cupboard ID that the package has been stored")
 	private int cupboardId;
 	
+	@ApiModelProperty(notes = "The employee that assigned the package to assignee")
 	private PersonDTO assigner;
+	@ApiModelProperty(notes = "The employee that was assigned the package to")
 	private PersonDTO assignee;
 	
+	@ApiModelProperty(notes = "Current status of the package")
 	private String packageStatus;
 
 	public PackageDTO(String packageTypeId, int packageWeightRangeId, PersonDTO bearer, PersonDTO reciever,

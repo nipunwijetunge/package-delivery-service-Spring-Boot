@@ -12,14 +12,20 @@ import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 import com.nipun.ABXpackagedeliveryservice.service.PackageDeliveryService;
 import com.nipun.ABXpackagedeliveryservice.service.PackageDeliveryServiceImpl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+@RequestMapping("/api")
+@Api(tags = "Package Registration", value = "Packageregistration", description = "Controller for Package registration")
 public class PackageRegistrationController {
 	private static PackageDeliveryService service = PackageDeliveryServiceImpl.getInstance();
 	private static PackageDeliveryRequest request;
 	
 	@RequestMapping(value = "/registerPackage", method = RequestMethod.POST)
-	public PackageDeliveryResponse registerPackage(@RequestBody String json) {
-		PackageDTO pkg = new Gson().fromJson(json, PackageDTO.class);
+	@ApiOperation(value = "Registers a package")
+	public PackageDeliveryResponse registerPackage(@RequestBody PackageDTO pkg) {
+		//PackageDTO pkg = new Gson().fromJson(json, PackageDTO.class);
 		request = new PackageDeliveryRequest(PackageDeliveryRequest.SUCCESS, "SUCCESS", "Package registration details received", pkg);
 		
 		try {

@@ -12,14 +12,20 @@ import com.nipun.ABXpackagedeliveryservice.response.PackageDeliveryResponse;
 import com.nipun.ABXpackagedeliveryservice.service.PackageDeliveryService;
 import com.nipun.ABXpackagedeliveryservice.service.PackageDeliveryServiceImpl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+@RequestMapping("/api")
+@Api(tags = "Package Storing", value = "PackageStoring", description = "Controller for Package storing")
 public class PackageStoringController {
 	private static PackageDeliveryService service = PackageDeliveryServiceImpl.getInstance();
 	private static PackageDeliveryRequest request;
 	
 	@RequestMapping(value = "/storePackage", method = RequestMethod.POST)
-	public PackageDeliveryResponse storePackage(@RequestBody String json) {
-		PackageDTO pkg = new Gson().fromJson(json, PackageDTO.class);
+	@ApiOperation(value = "Stores a package")
+	public PackageDeliveryResponse storePackage(@RequestBody PackageDTO pkg) {
+		//PackageDTO pkg = new Gson().fromJson(json, PackageDTO.class);
 		request = new PackageDeliveryRequest(PackageDeliveryRequest.SUCCESS, "SUCCESS", "Package storing details received", pkg);
 		
 		try {
