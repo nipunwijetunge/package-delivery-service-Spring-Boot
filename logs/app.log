@@ -96,3 +96,7 @@
 2021-08-17 12:11:13.552 DEBUG LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : Running with Spring Boot v2.5.3, Spring v5.3.9
 2021-08-17 12:11:13.552  INFO LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : No active profile set, falling back to default profiles: default
 2021-08-17 12:11:15.152  INFO LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : Started AbxPackageDeliveryServiceApplication in 1.824 seconds (JVM running for 2.336)
+2021-08-17 16:51:53.731  INFO LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : Starting AbxPackageDeliveryServiceApplication using Java 15.0.1 on LAPTOP-CRV0L8OP with PID 24932 (D:\eclipse-web-workspace\ABX-package-delivery-service\build\classes\java\main started by Nipun in D:\eclipse-web-workspace\ABX-package-delivery-service)
+2021-08-17 16:51:53.737 DEBUG LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : Running with Spring Boot v2.5.3, Spring v5.3.9
+2021-08-17 16:51:53.737  INFO LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : No active profile set, falling back to default profiles: default
+2021-08-17 16:51:55.348  INFO LAPTOP-CRV0L8OP --- [           main] n.A.AbxPackageDeliveryServiceApplication : Started AbxPackageDeliveryServiceApplication in 1.843 seconds (JVM running for 2.384)

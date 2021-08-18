@@ -450,8 +450,10 @@ public class PackageDeliveryServiceImpl implements PackageDeliveryService{
 					return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Passport number is invalid");
 				}
 				
-	//		case 3:
-	//			if (customerId.matches())
+			case 3:
+				LOGGER.info("PackageDeliveryServiceImpl | valid Passport Number");
+				return new PackageDeliveryResponse(PackageDeliveryResponse.SUCCESS, "SUCCESS", "Driving license number is valid");
+				
 			default:
 				LOGGER.error("PackageDeliveryServiceImpl | invalid id type");
 				return new PackageDeliveryResponse(PackageDeliveryResponse.ERROR, "FAILED", "Invalid ID type");
